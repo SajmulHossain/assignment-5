@@ -1,9 +1,10 @@
 import { IUser } from "../user/user.interface";
+import { User } from "../user/user.model";
 
 const register = async (payload: IUser) => {
+  const user = await User.create(payload)
   
-  
-  return;
+  return user;
 };
 const login = async () => {
   return;
