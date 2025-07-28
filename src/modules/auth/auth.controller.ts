@@ -1,13 +1,9 @@
 import { Request, Response } from "express";
-import { AuthService } from "./auth.service";
-import { sendResponse } from "../../utils/sendResponse";
 import { catchAsync } from "../../utils/catchAsync";
-import z from "zod";
-import { createUserZodSchema } from "../user/user.validation";
+import { sendResponse } from "../../utils/sendResponse";
+import { AuthService } from "./auth.service";
 
-const register = catchAsync(async (req: Request, res: Response) => {
-  req.body = await createUserZodSchema.parseAsync(req.body);
-  
+const register = catchAsync(async (req: Request, res: Response) => {  
   const user = await AuthService.register(req.body);
 
   

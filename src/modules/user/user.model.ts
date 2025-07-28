@@ -11,7 +11,8 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
-      unique: [true,"Email Already Exist"],
+      // unique: [true,"Email Already Exist"],
+      unique: true
     },
     password: { type: String },
   },
