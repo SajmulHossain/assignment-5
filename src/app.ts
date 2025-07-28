@@ -3,20 +3,20 @@ import session from "express-session";
 import { globalErrorHandler } from "./middleware/globalErrorHandler";
 import { router } from "./routes";
 import { env } from "./config/env.config";
+import "./config/passport.config";
 import passport from "passport";
 
 const app = express();
 
 app.use(express.json());
-app.use(
-  session({
+app.use(session({
     secret: env.express_session_secret,
     resave: false,
     saveUninitialized: false,
   })
 );
 app.use(passport.initialize());
-app.use(passport.session);
+app.use(passport.session());
 
 app.use("/api/v1", router);
 

@@ -18,6 +18,8 @@ export const globalErrorHandler = (
   let message = "Something Went Wrong";
   let errorSources: IErrorSources[] = [];
 
+  console.log(error);
+
   if (error.code === 11000) {
     const simplifiedError = handlerDuplicateError(error);
     message = simplifiedError.message;
