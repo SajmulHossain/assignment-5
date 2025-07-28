@@ -1,11 +1,19 @@
 import { Types } from "mongoose";
 
-export interface IUser {
-    _id?: Types.ObjectId;
-    name: string;
-    email: string;
-    password: string;
+export enum UserRole {
+  admin = "admin",
+  rider = "rider",
+  driver = "driver",
+}
 
-    createdAt?: Date,
-    updatedAt?: Date,
+export interface IUser {
+  _id?: Types.ObjectId;
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  role: UserRole;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
