@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import mongoose from "mongoose";
 import app from "./app";
 import { env } from "./config/env.config";
@@ -5,9 +6,9 @@ import {Server} from 'http';
 let server: Server;
 
 const pushStart = async () => {
-  await mongoose.connect(env.MONGODB_URI);
+  await mongoose.connect(env.mongodb_uri);
   console.log("DB Connected");
-  server = app.listen(Number(env.PORT), () => {
+  server = app.listen(Number(env.port), () => {
     console.log(`Server is running on PORT: 3000`);
   });
 };
