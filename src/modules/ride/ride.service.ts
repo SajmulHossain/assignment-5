@@ -1,12 +1,22 @@
+import { getDistance } from "../../utils/getDistance";
 import { IRide } from "./ride.interface";
 import { Ride } from "./ride.model";
 
 const createRide = async(payload: IRide) => {
-    const ride = await Ride.create(payload);
+    const coordinate1 = payload.pickup;
+    const coordinate2 = payload.destination;
 
-    return ride;
+    const distance = getDistance(
+      [...coordinate1.coordinate,
+      ...coordinate2.coordinate]
+    );
+    console.log(distance);
+
+    // const ride = await Ride.create(payload);
+
+    // return ride;
 }
 
-const RideService = {
+export const RideService = {
     createRide
 }
