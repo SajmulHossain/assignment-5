@@ -8,7 +8,8 @@ export enum UserRole {
 
 export enum DriverApprovalStatus {
   approve="approve",
-  suspend="suspend"
+  suspend="suspend",
+  pending="pending"
 }
 
 export interface IUser {
@@ -20,7 +21,6 @@ export interface IUser {
   role: UserRole;
   isBlocked?: boolean;
   
-  driverStatus?: boolean;
   driverApprovalStatus: DriverApprovalStatus;
   isDriverActive: boolean;
 

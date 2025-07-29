@@ -1,11 +1,12 @@
 import { model, Schema } from "mongoose";
-import { IUser } from "./user.interface";
+import { DriverApprovalStatus, IUser, UserRole } from "./user.interface";
 
 const userSchema = new Schema<IUser>(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      // required: [true, "Name is required"],
+      required:true,
       min: 3,
     },
     email: {
@@ -14,7 +15,25 @@ const userSchema = new Schema<IUser>(
       // unique: [true,"Email Already Exist"],
       unique: true
     },
-    password: { type: String },
+    phone:{ type: String, required: true },
+    password: { type: String, required: true },
+    isBlocked: Boolean,
+
+    role: {
+      type: String,
+      enum: Object.values(UserRole)
+    },
+    
+    driverApprovalStatus: {
+      type: String,
+      enum: Object.values(DriverApprovalStatus),
+      default: DriverApprovalStatus.pending
+    },
+    isDriverActive: {
+      type: Boolean,
+      default: false,
+    }
+    
   },
   {
     timestamps: true,
