@@ -6,6 +6,11 @@ export enum UserRole {
   driver = "driver",
 }
 
+export enum DriverApprovalStatus {
+  approve="approve",
+  suspend="suspend"
+}
+
 export interface IUser {
   _id?: Types.ObjectId;
   name: string;
@@ -13,6 +18,11 @@ export interface IUser {
   password: string;
   phone: string;
   role: UserRole;
+  isBlocked?: boolean;
+  
+  driverStatus?: boolean;
+  driverApprovalStatus: DriverApprovalStatus;
+  isDriverActive: boolean;
 
   createdAt?: Date;
   updatedAt?: Date;
