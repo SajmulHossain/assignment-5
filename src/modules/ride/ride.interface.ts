@@ -19,4 +19,8 @@ export interface IRide {
   pickup: IDestination;
   destination: IDestination;
   status: RideStatus;
+  amount: number;
+
+  createdAt?: Date;
+  updatedAt?: Date;
 }
