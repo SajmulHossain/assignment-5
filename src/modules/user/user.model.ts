@@ -26,14 +26,11 @@ const userSchema = new Schema<IUser>(
     
     driverApprovalStatus: {
       type: String,
-      enum: Object.values(DriverApprovalStatus),
-      default: DriverApprovalStatus.pending
+      enum: Object.values(DriverApprovalStatus)
     },
     isDriverActive: {
       type: Boolean,
-      default: false,
     }
-    
   },
   {
     timestamps: true,
