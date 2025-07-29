@@ -5,7 +5,7 @@ const degToRad = (deg: number) => {
 export const getDistance = (coordinate: number[]) => {
   const radius = 6371;
 
-  const [lat1, lat2, lon1, lon2] = coordinate;
+  const [lat1, lon1, lat2, lon2] = coordinate;
 
   const dLat = degToRad(lat2 - lat1);
   const dLon = degToRad(lon2 - lon1);

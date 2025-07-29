@@ -1,16 +1,19 @@
 import { model, Schema } from "mongoose";
 import { IDestination, IRide, RideStatus } from "./ride.interface";
 
-const destinationSchema = new Schema<IDestination>({
-  place_name: {
-    type: String,
-    required: true,
+const destinationSchema = new Schema<IDestination>(
+  {
+    place_name: {
+      type: String,
+      required: true,
+    },
+    coordinate: {
+      type: [Number],
+      required: true,
+    },
   },
-  coordinate: {
-    type: [Number],
-    required: true,
-  },
-});
+  { _id: false }
+);
 
 const rideSchema = new Schema<IRide>(
   {
@@ -32,8 +35,8 @@ const rideSchema = new Schema<IRide>(
     destination: destinationSchema,
     amount: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   {
     versionKey: false,

@@ -10,11 +10,14 @@ const createRide = async(payload: IRide) => {
       [...coordinate1.coordinate,
       ...coordinate2.coordinate]
     );
-    console.log(distance);
+    
+    const amount = Math.round(distance * 0.025);
 
-    // const ride = await Ride.create(payload);
+    payload.amount = amount;
 
-    // return ride;
+    const ride = await Ride.create(payload);
+
+    return ride;
 }
 
 export const RideService = {
