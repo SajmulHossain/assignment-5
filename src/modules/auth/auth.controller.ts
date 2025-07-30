@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
 import passport from "passport";
@@ -30,10 +31,12 @@ const login = catchAsync(
           return next(new AppError(401, info.message));
         }
 
+        const { password, ...rest } = user;
+
         sendResponse(res, {
           statusCode: 200,
           message: "User Logged in Successfully",
-          data: user,
+          data: rest,
         });
       }
     )(req, res, next);

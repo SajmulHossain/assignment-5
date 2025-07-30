@@ -16,4 +16,4 @@ export const createRideZodSchema = z.object({
     amount: z.number().optional()
 })
 
-export const updateRideZodSchema = createRideZodSchema.pick({status: true})
+export const updateRideZodSchema = createRideZodSchema.pick({status: true, driver: true}).required();

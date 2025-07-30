@@ -20,6 +20,13 @@ const createRide = async(payload: IRide) => {
     return ride;
 }
 
-export const RideService = {
-    createRide
+
+const updateRideStatus = (id: string,payload: Partial<IRide>) => {
+  const {status, driver} = payload;
+  console.log(payload);
 }
+
+export const RideService = {
+  createRide,
+  updateRideStatus,
+};
