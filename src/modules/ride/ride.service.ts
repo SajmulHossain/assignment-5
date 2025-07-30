@@ -68,10 +68,12 @@ const updateRideStatus = async (id: string, payload: Record<string,string>, user
   }
   
   const rideStatusArr = Object.values(RideStatus);
-  const rideCurrentIndex = rideStatusArr.findIndex(rideValue => ride?.status.some(singleRide => singleRide.state === rideValue));
+
+  const currentStatus = ride.status[ride.status.length-1].state;
+  
+  const rideCurrentIndex = rideStatusArr.findIndex(rideValue => rideValue === currentStatus);
 
   const rideUpdateStatusIndex = rideStatusArr.findIndex(ride => ride === status);
-
 
   if(rideUpdateStatusIndex !== rideCurrentIndex + 1) {
     throw new AppError(400, `Give sequencial update. e.g, ${Object.values(RideStatus)}`);
