@@ -17,7 +17,11 @@ const createRide = catchAsync(async (req: Request, res: Response) => {
 const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const data = await RideService.updateRideStatus(id, req.body, req.user as IUser);
+  const data = await RideService.updateRideStatus(
+    id,
+    req.body as Record<string, string>,
+    req.user as IUser
+  );
 
   sendResponse(res, {
     statusCode: 200,

@@ -9,6 +9,11 @@ export enum RideStatus {
   cancelled = "cancelled",
 }
 
+export interface IRideStatus {
+  timestamps?: Date;
+  state: RideStatus;
+}
+
 export interface IDestination {
   place_name: string;
   coordinate: number[];
@@ -20,7 +25,7 @@ export interface IRide {
   driver: Types.ObjectId;
   pickup: IDestination;
   destination: IDestination;
-  status: RideStatus;
+  status: IRideStatus[];
   amount: number;
 
   createdAt?: Date;

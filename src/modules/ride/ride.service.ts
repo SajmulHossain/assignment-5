@@ -23,9 +23,14 @@ const createRide = async (payload: IRide) => {
   return ride;
 };
 
-const updateRideStatus = async (id: string, payload: Partial<IRide>, user: IUser) => {
-  const { status, driver } = payload as { status: RideStatus, driver: Types.ObjectId };
+const updateRideStatus = async (id: string, payload: Record<string,string>, user: IUser) => {
+  const { status, driver } = payload as { status: string, driver: string };
+
   const ride = await Ride.findById(id);
+
+  if(!ride){
+    throw new AppError(404, "Ride not found");
+  }
 
   if(status === RideStatus.requested) {
     throw new AppError(400, "Invalid request");
@@ -35,23 +40,34 @@ const updateRideStatus = async (id: string, payload: Partial<IRide>, user: IUser
     throw new AppError(400, "Only driver can do this");
   }
   
-  if(status === RideStatus.cancelled && ride?.status !== RideStatus.requested) {
-    throw new AppError(400, `You cannot cancel the ride now, ride is ${ride?.status}`);
+  if (
+    status === RideStatus.cancelled &&
+    ride?.status.some((singleRide) => singleRide.state !== RideStatus.requested)
+  ) {
+    throw new AppError(
+      400,
+      `You cannot cancel the ride now, ride is ${ride?.status}`
+    );
   }
 
-  if(status === ride?.status) {
-    throw new AppError(400, `Ride is already ${status}`)
+  if (ride?.status.some((singleRide) => singleRide.state === status)
+  ) {
+    throw new AppError(400, `Ride is already ${status}`);
   }
   
   const rideStatusArr = Object.values(RideStatus);
-  const rideCurrentIndex = rideStatusArr.findIndex(rideStatus => rideStatus  === ride?.status);
+  const rideCurrentIndex = rideStatusArr.findIndex(rideValue => ride?.status.some(singleRide => singleRide.state === rideValue));
+
   const rideUpdateStatusIndex = rideStatusArr.findIndex(ride => ride === status);
 
+
   if(rideUpdateStatusIndex !== rideCurrentIndex + 1) {
-    throw new AppError(400, `Give sequencial update. e.g, ${Object.values(RideStatus)}`)
+    throw new AppError(400, `Give sequencial update. e.g, ${Object.values(RideStatus)}`);
   }
 
-  const data = await Ride.findByIdAndUpdate(id, { status, driver }, { new: true });
+  const updatedStatus = [...ride.status, {state: status}]
+
+  const data = await Ride.findByIdAndUpdate(id, { status: updatedStatus, driver }, { new: true });
 
   return data;
 };

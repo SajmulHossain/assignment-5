@@ -12,8 +12,13 @@ export const createRideZodSchema = z.object({
         place_name: z.string(),
         coordinate: z.array(z.number()),
     }),
-    status: z.enum(Object.values(RideStatus)).default(RideStatus.requested),
+    status: z.array(z.object({
+        state: z.enum(Object.values(RideStatus)),
+    })).default([{ state: RideStatus.requested }]),
     amount: z.number().optional()
 })
 
-export const updateRideZodSchema = createRideZodSchema.pick({status: true, driver: true}).required();
+export const updateRideZodSchema = z.object({
+    driver: z.string(),
+    status: z.string()
+})
