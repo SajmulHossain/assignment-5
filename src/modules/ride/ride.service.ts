@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
 import AppError from "../../utils/AppError";
 import { getDistance } from "../../utils/getDistance";
+import { IUser, UserRole } from "../user/user.interface";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
@@ -21,13 +23,21 @@ const createRide = async (payload: IRide) => {
   return ride;
 };
 
-const updateRideStatus = async (id: string, payload: Partial<IRide>) => {
-  const { status, driver } = payload;
+const updateRideStatus = async (id: string, payload: Partial<IRide>, user: IUser) => {
+  const { status, driver } = payload as { status: RideStatus, driver: Types.ObjectId };
   const ride = await Ride.findById(id);
 
+  if(status === RideStatus.requested) {
+    throw new AppError(400, "Invalid request");
+  }
+
+  if(user.role === UserRole.rider && status !== RideStatus.canceled) {
+    throw new AppError(400, "Only driver can do this");
+  }
+  
   if(status === RideStatus.canceled && ride?.status !== RideStatus.requested) {
-    throw new AppError(400, "You cannot cancel the ride now, ride is picked up by a ride");
-  } 
+    throw new AppError(400, "You cannot cancel the ride now, ride is picked up");
+  }
 
   const data = await Ride.findByIdAndUpdate(id, { status, driver }, { new: true });
 

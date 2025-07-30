@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
-import { RideService } from "./ride.service";
 import { sendResponse } from "../../utils/sendResponse";
+import { IUser } from "../user/user.interface";
+import { RideService } from "./ride.service";
 
 const createRide = catchAsync(async (req: Request, res: Response) => {
   const data = await RideService.createRide(req.body);
@@ -16,7 +17,7 @@ const createRide = catchAsync(async (req: Request, res: Response) => {
 const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const data = await RideService.updateRideStatus(id, req.body);
+  const data = await RideService.updateRideStatus(id, req.body, req.user as IUser);
 
   sendResponse(res, {
     statusCode: 200,

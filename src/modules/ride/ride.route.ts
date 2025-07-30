@@ -8,6 +8,6 @@ import { createRideZodSchema, updateRideZodSchema } from "./ride.validation";
 const router = Router();
 
 router.post("/request", checkAuth(...Object.values(UserRole)),validateReqBody(createRideZodSchema), RideController.createRide);
-router.patch("/:id/status",checkAuth(UserRole.driver), validateReqBody(updateRideZodSchema), RideController.updateRideStatus);
+router.patch("/:id/status",checkAuth(...Object.values(UserRole)), validateReqBody(updateRideZodSchema), RideController.updateRideStatus);
 
 export const RideRoutes = router;
