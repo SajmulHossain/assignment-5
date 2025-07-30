@@ -38,10 +38,19 @@ const updateRideStatus = async (id: string, payload: Record<string,string>, user
     throw new AppError(400, "Please update your vehicle info");
   }
 
+  
   const ride = await Ride.findById(id);
-
+  
   if(ride?.rider === isAvailableDriver.email) {
     throw new AppError(400, "You cannot handle your requested ride");
+  }
+
+  const isOnRide = await Ride.findOne({ driver: email });
+
+  console.log(isOnRide);
+
+  if(isOnRide) {
+    throw new AppError(400, "You cannot accept another ride during a in transiter ride");
   }
 
   if(!ride){

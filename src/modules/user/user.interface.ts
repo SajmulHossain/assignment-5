@@ -14,7 +14,7 @@ export enum DriverApprovalStatus {
 
 export interface IVehice {
   model: string;
-  registraion_no: string;
+  registration_no: string;
 }
 
 export interface IUser {

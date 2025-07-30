@@ -11,8 +11,8 @@ import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
 import { AuthService } from "./auth.service";
 
 const register = catchAsync(async (req: Request, res: Response) => {
-  const user = await AuthService.register(req.body);
 
+  const user = await AuthService.register(req.body);
   sendResponse(res, {
     data: user,
     message: "User created successfully",

@@ -30,3 +30,7 @@ export const createUserZodSchema = z.object({
     })
     .optional(),
 });
+
+const partialUserZodSchema = createUserZodSchema.partial()
+
+export const updateUserZodSchema = partialUserZodSchema.omit({ password: true });

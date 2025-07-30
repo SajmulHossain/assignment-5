@@ -1,3 +1,4 @@
+import { IUser } from "./user.interface";
 import { User } from "./user.model";
 
 const getAllUser = async() => {
@@ -12,7 +13,13 @@ const getSingleUser = async (id: string) => {
     return user;
 }
 
+
+const updateUser = async (email:string, payload: Partial<IUser>) => {
+    await User.findOneAndUpdate({email}, payload, {new: true});
+}
+
 export const UserService = {
     getAllUser,
-    getSingleUser
+    getSingleUser,
+    updateUser
 }

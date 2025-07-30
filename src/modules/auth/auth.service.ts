@@ -13,6 +13,9 @@ const register = async (payload: IUser) => {
   if (payload.role === UserRole.driver) {
     payload.driverApprovalStatus = DriverApprovalStatus.pending;
     payload.isDriverActive = false;
+    if(!payload.vehicleInfo) {
+      throw new AppError(400, "Please provide your vehicle info");
+    }
   } else {
     payload.isBlocked = false;
   }

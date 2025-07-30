@@ -12,7 +12,7 @@ const vehicleModel = new Schema<IVehice>(
       type: String,
       required: true,
     },
-    registraion_no: {
+    registration_no: {
       type: String,
       required: true,
     },
