@@ -5,6 +5,14 @@ import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
+const getRideForUser = async(user: IUser)=> {
+  const { email } = user;
+  
+  const rides = await Ride.find({ $or: [{rider: email}, {driver: email}]})
+
+  return rides;
+}
+
 const createRide = async (payload: IRide, user: IUser) => {
   const { email } = user;
 
@@ -127,6 +135,7 @@ const updateRideStatus = async (
 };
 
 export const RideService = {
+  getRideForUser,
   createRide,
   updateRideStatus,
 };

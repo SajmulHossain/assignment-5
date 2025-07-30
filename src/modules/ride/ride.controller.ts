@@ -4,6 +4,17 @@ import { sendResponse } from "../../utils/sendResponse";
 import { IUser } from "../user/user.interface";
 import { RideService } from "./ride.service";
 
+const getRideForUser = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  const data = await RideService.getRideForUser(user as IUser);
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Rides retrived successfully",
+    data
+  })
+})
+
 const createRide = catchAsync(async (req: Request, res: Response) => {
   const data = await RideService.createRide(req.body, req.user as IUser);
 
@@ -33,4 +44,5 @@ const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
 export const RideController = {
   createRide,
   updateRideStatus,
+  getRideForUser
 };
