@@ -31,12 +31,24 @@ const updateRideStatus = async (id: string, payload: Partial<IRide>, user: IUser
     throw new AppError(400, "Invalid request");
   }
 
-  if(user.role === UserRole.rider && status !== RideStatus.canceled) {
+  if(user.role === UserRole.rider && status !== RideStatus.cancelled) {
     throw new AppError(400, "Only driver can do this");
   }
   
-  if(status === RideStatus.canceled && ride?.status !== RideStatus.requested) {
-    throw new AppError(400, "You cannot cancel the ride now, ride is picked up");
+  if(status === RideStatus.cancelled && ride?.status !== RideStatus.requested) {
+    throw new AppError(400, `You cannot cancel the ride now, ride is ${ride?.status}`);
+  }
+
+  if(status === ride?.status) {
+    throw new AppError(400, `Ride is already ${status}`)
+  }
+  
+  const rideStatusArr = Object.values(RideStatus);
+  const rideCurrentIndex = rideStatusArr.findIndex(rideStatus => rideStatus  === ride?.status);
+  const rideUpdateStatusIndex = rideStatusArr.findIndex(ride => ride === status);
+
+  if(rideUpdateStatusIndex !== rideCurrentIndex + 1) {
+    throw new AppError(400, `Give sequencial update. e.g, ${Object.values(RideStatus)}`)
   }
 
   const data = await Ride.findByIdAndUpdate(id, { status, driver }, { new: true });
