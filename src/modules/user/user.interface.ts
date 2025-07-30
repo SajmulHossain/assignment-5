@@ -12,6 +12,11 @@ export enum DriverApprovalStatus {
   pending="pending"
 }
 
+export interface IVehice {
+  model: string;
+  registraion_no: string;
+}
+
 export interface IUser {
   _id?: Types.ObjectId;
   name: string;
@@ -23,6 +28,7 @@ export interface IUser {
   
   driverApprovalStatus: DriverApprovalStatus;
   isDriverActive: boolean;
+  vehicleInfo: IVehice
 
   createdAt?: Date;
   updatedAt?: Date;

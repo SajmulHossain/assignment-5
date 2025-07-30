@@ -23,4 +23,10 @@ export const createUserZodSchema = z.object({
         "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
     }),
   role: z.enum(Object.values(UserRole)),
+  vehicleInfo: z
+    .object({
+      model: z.string(),
+      registration_no: z.string(),
+    })
+    .optional(),
 });

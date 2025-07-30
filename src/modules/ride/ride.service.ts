@@ -34,6 +34,10 @@ const updateRideStatus = async (id: string, payload: Record<string,string>, user
     throw new AppError(404, "Driver is not available");
   }
 
+  if(!isAvailableDriver?.vehicleInfo?.model) {
+    throw new AppError(400, "Please update your vehicle info");
+  }
+
   const ride = await Ride.findById(id);
 
   if(ride?.rider === isAvailableDriver.email) {
