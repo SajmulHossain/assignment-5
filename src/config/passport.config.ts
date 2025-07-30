@@ -24,7 +24,7 @@ passport.use(
           return done(null, false, { message: "Password didn't matched" });
         }
 
-        return done(null, isUserExist);
+        return done(null, isUserExist.toObject());
       } catch (error) {
         return done(error);
       }

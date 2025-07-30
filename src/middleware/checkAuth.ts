@@ -7,17 +7,14 @@ import AppError from "../utils/AppError";
 import { catchAsync } from "../utils/catchAsync";
 import { verifyToken } from "../utils/jwt";
 
-export const checkAuth = (...roles: string[]) =>
-  catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+export const checkAuth = (...roles: string[]) => catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { accessToken } = req.cookies;
 
     if (!accessToken) {
       throw new AppError(403, "No access identifier");
     }
 
-    const verifiedToken = verifyToken(
-      accessToken,
-      env.jwt.jwt_access_secret
+    const verifiedToken = verifyToken(accessToken, env.jwt.jwt_access_secret
     ) as JwtPayload;
 
     const isUserExist = await User.findOne({ email: verifiedToken.email });
@@ -30,9 +27,7 @@ export const checkAuth = (...roles: string[]) =>
       throw new AppError(400, "User is not allowed to procced");
     }
 
-    if (
-      isUserExist.role === UserRole.driver &&
-      isUserExist.driverApprovalStatus !== DriverApprovalStatus.pending
+    if (isUserExist.role === UserRole.driver && isUserExist.driverApprovalStatus !== DriverApprovalStatus.pending
     ) {
       throw new AppError(401, "Driver is not allowed to procced");
     }

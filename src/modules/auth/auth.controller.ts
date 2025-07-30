@@ -7,6 +7,8 @@ import { sendResponse } from "../../utils/sendResponse";
 import { IUser } from "../user/user.interface";
 import { AuthService } from "./auth.service";
 import AppError from "../../utils/AppError";
+import { createToken } from "../../utils/token";
+import { setToken } from "../../utils/setToken";
 
 const register = catchAsync(async (req: Request, res: Response) => {
   const user = await AuthService.register(req.body);
@@ -32,6 +34,9 @@ const login = catchAsync(
         }
 
         const { password, ...rest } = user;
+
+        const token = createToken(rest);
+        setToken(res, token);
 
         sendResponse(res, {
           statusCode: 200,
