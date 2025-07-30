@@ -28,12 +28,12 @@ const statusSchema = new Schema<IRideStatus>({
 const rideSchema = new Schema<IRide>(
   {
     rider: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: "User",
     },
     driver: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: "User",
     },
     status:[statusSchema],

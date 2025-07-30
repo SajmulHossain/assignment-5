@@ -1,7 +1,7 @@
-import { Types } from "mongoose";
 import AppError from "../../utils/AppError";
 import { getDistance } from "../../utils/getDistance";
-import { IUser, UserRole } from "../user/user.interface";
+import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
+import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
@@ -24,9 +24,19 @@ const createRide = async (payload: IRide) => {
 };
 
 const updateRideStatus = async (id: string, payload: Record<string,string>, user: IUser) => {
-  const { status, driver } = payload as { status: string, driver: string };
+  const { status, driverEmail } = payload as { status: string, driverEmail: string };
+
+  const isAvailableDriver = await User.findOne({ email: driverEmail, role: UserRole.driver, isDriverActive: true, driverApprovalStatus: DriverApprovalStatus.approve })
+
+  if(!isAvailableDriver) {
+    throw new AppError(404, "Driver is not available");
+  }
 
   const ride = await Ride.findById(id);
+
+  if(ride?.rider === isAvailableDriver.email) {
+    throw new AppError(400, "You cannot handle your requested ride");
+  }
 
   if(!ride){
     throw new AppError(404, "Ride not found");
@@ -67,7 +77,7 @@ const updateRideStatus = async (id: string, payload: Record<string,string>, user
 
   const updatedStatus = [...ride.status, {state: status}]
 
-  const data = await Ride.findByIdAndUpdate(id, { status: updatedStatus, driver }, { new: true });
+  const data = await Ride.findByIdAndUpdate(id, { status: updatedStatus, driver: driverEmail }, { new: true });
 
   return data;
 };

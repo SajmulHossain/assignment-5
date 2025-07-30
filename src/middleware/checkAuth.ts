@@ -27,7 +27,7 @@ export const checkAuth = (...roles: string[]) => catchAsync(async (req: Request,
       throw new AppError(400, "User is not allowed to procced");
     }
 
-    if (isUserExist.role === UserRole.driver && isUserExist.driverApprovalStatus !== DriverApprovalStatus.pending
+    if (isUserExist.role === UserRole.driver && isUserExist.driverApprovalStatus === DriverApprovalStatus.suspend
     ) {
       throw new AppError(401, "Driver is not allowed to procced");
     }

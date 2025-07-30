@@ -21,8 +21,8 @@ export interface IDestination {
 
 export interface IRide {
   _id?: Types.ObjectId;
-  rider: Types.ObjectId;
-  driver: Types.ObjectId;
+  rider: string;
+  driver: string;
   pickup: IDestination;
   destination: IDestination;
   status: IRideStatus[];
