@@ -5,7 +5,7 @@ import { IUser } from "../user/user.interface";
 import { RideService } from "./ride.service";
 
 const createRide = catchAsync(async (req: Request, res: Response) => {
-  const data = await RideService.createRide(req.body);
+  const data = await RideService.createRide(req.body, req.user as IUser);
 
   sendResponse(res, {
     statusCode: 201,

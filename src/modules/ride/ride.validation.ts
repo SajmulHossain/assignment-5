@@ -2,8 +2,6 @@ import z from "zod";
 import { RideStatus } from "./ride.interface";
 
 export const createRideZodSchema = z.object({
-    rider: z.email(),
-    driver: z.email().optional(),
     pickup: z.object({
         place_name: z.string(),
         coordinate: z.array(z.number()),
@@ -19,6 +17,5 @@ export const createRideZodSchema = z.object({
 })
 
 export const updateRideZodSchema = z.object({
-    driverEmail: z.email(),
     status: z.string()
 })

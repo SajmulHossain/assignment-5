@@ -5,7 +5,7 @@ import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
-const createRide = async (payload: IRide) => {
+const createRide = async (payload: IRide, user: IUser) => {
   const coordinate1 = payload.pickup;
   const coordinate2 = payload.destination;
 
@@ -17,6 +17,7 @@ const createRide = async (payload: IRide) => {
   const amount = Math.round(distance * 0.025);
 
   payload.amount = amount;
+  payload.rider = user.email;
 
   const ride = await Ride.create(payload);
 
@@ -24,9 +25,10 @@ const createRide = async (payload: IRide) => {
 };
 
 const updateRideStatus = async (id: string, payload: Record<string,string>, user: IUser) => {
-  const { status, driverEmail } = payload as { status: string, driverEmail: string };
+  const { status } = payload as { status: string };
+  const { email } = user;
 
-  const isAvailableDriver = await User.findOne({ email: driverEmail, role: UserRole.driver, isDriverActive: true, driverApprovalStatus: DriverApprovalStatus.approve })
+  const isAvailableDriver = await User.findOne({ email, role: UserRole.driver, isDriverActive: true, driverApprovalStatus: DriverApprovalStatus.approve })
 
   if(!isAvailableDriver) {
     throw new AppError(404, "Driver is not available");
@@ -77,7 +79,7 @@ const updateRideStatus = async (id: string, payload: Record<string,string>, user
 
   const updatedStatus = [...ride.status, {state: status}]
 
-  const data = await Ride.findByIdAndUpdate(id, { status: updatedStatus, driver: driverEmail }, { new: true });
+  const data = await Ride.findByIdAndUpdate(id, { status: updatedStatus, driver: email }, { new: true });
 
   return data;
 };
