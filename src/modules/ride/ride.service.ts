@@ -1,6 +1,6 @@
+import AppError from "../../utils/AppError";
 import { getDistance } from "../../utils/getDistance";
-import { User } from "../user/user.model";
-import { IRide } from "./ride.interface";
+import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
 const createRide = async (payload: IRide) => {
@@ -23,8 +23,13 @@ const createRide = async (payload: IRide) => {
 
 const updateRideStatus = async (id: string, payload: Partial<IRide>) => {
   const { status, driver } = payload;
+  const ride = await Ride.findById(id);
 
-  const data = await User.findById(id, { status, driver }, { new: true });
+  if(status === RideStatus.canceled && ride?.status !== RideStatus.requested) {
+    throw new AppError(400, "You cannot cancel the ride now, ride is picked up by a ride");
+  } 
+
+  const data = await Ride.findByIdAndUpdate(id, { status, driver }, { new: true });
 
   return data;
 };

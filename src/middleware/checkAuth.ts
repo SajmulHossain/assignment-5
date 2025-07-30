@@ -32,7 +32,7 @@ export const checkAuth = (...roles: string[]) => catchAsync(async (req: Request,
       throw new AppError(401, "Driver is not allowed to procced");
     }
 
-    if (!roles.includes(verifiedToken.role)) {
+    if (!roles.includes(isUserExist.role)) {
       throw new AppError(403, "You are not permitted");
     }
 

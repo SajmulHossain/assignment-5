@@ -6,6 +6,7 @@ export enum RideStatus {
   picked_up = "picked_up",
   in_transit = "in_transit",
   completed = "completed",
+  canceled = "canceled",
 }
 
 export interface IDestination {
@@ -14,7 +15,7 @@ export interface IDestination {
 }
 
 export interface IRide {
-  _id?:Types.ObjectId; 
+  _id?: Types.ObjectId;
   rider: Types.ObjectId;
   driver: Types.ObjectId;
   pickup: IDestination;

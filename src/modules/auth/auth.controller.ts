@@ -39,7 +39,7 @@ const login = catchAsync(
 
         if (
           user.role === UserRole.driver &&
-          user.driverApprovalStatus !== DriverApprovalStatus.suspend
+          user.driverApprovalStatus === DriverApprovalStatus.suspend
         ) {
           return next(new AppError(401, "Your account is suspended"));
         }
