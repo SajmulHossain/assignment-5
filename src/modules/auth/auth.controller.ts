@@ -5,7 +5,7 @@ import passport from "passport";
 import AppError from "../../utils/AppError";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { setToken } from "../../utils/setToken";
+import { clearCookie, setToken } from "../../utils/setToken";
 import { createToken } from "../../utils/token";
 import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
 import { AuthService } from "./auth.service";
@@ -63,20 +63,18 @@ const login = catchAsync(
   }
 );
 
-const changePassword = async () => {
-  return;
-};
-const resetPassword = async () => {
-  return;
-};
-const forgotPassword = async () => {
-  return;
-};
+const logout = catchAsync(async(req: Request, res: Response) => {
+  clearCookie(res);
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Logged out successfully",
+    data: null,
+  });
+})
 
 export const AuthController = {
   register,
   login,
-  changePassword,
-  resetPassword,
-  forgotPassword,
+  logout
 };
