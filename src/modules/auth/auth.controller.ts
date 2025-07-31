@@ -33,6 +33,10 @@ const login = catchAsync(
           return next(new AppError(401, info.message));
         }
 
+        if(user?.isBlocked) {
+          return next(new AppError(400, "You are blocked"));
+        }
+
         if (user.role === UserRole.rider && user.isBlocked) {
           return next(new AppError(400, "Your accont is blocked"));
         }

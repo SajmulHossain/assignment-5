@@ -40,10 +40,37 @@ const updateUser = catchAsync(async(req: Request, res: Response) => {
       message: "User Updated successfully",
       data,
     });
+});
+
+const driverAccessUpdate = catchAsync(async(req: Request, res: Response) =>{
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const data = await UserService.driverAccessUpdate(id, status);
+
+   sendResponse(res, {
+     statusCode: 200,
+     message: "Driver Status Updated successfully",
+     data,
+   });
+});
+
+const userBlockUpdate = catchAsync(async(req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const data = await UserService.userBlockUpdate(id);
+  
+   sendResponse(res, {
+     statusCode: 200,
+     message: "User Block Status Updated Successfully",
+     data,
+   });
 })
 
 export const UserController = {
   getAllUser,
   getSingleUser,
-  updateUser
+  updateUser,
+  driverAccessUpdate,
+  userBlockUpdate
 };
