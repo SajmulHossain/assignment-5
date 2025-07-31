@@ -8,7 +8,6 @@ import { UserRole } from "./user.interface";
 const router = Router();
 
 router.get("/", checkAuth(UserRole.admin), UserController.getAllUser);
-router.patch("/driver/active", checkAuth(UserRole.driver), UserController.updateDriverActiveStatus);
 router.get("/:id", checkAuth(UserRole.admin), UserController.getSingleUser);
 router.patch("/block/:id", checkAuth(UserRole.admin), UserController.userBlockUpdate);
 router.patch("/update/:email",checkAuth(...Object.values(UserRole)), validateReqBody(updateUserZodSchema), UserController.updateUser)
