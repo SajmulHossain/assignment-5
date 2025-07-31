@@ -5,20 +5,27 @@ import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
-const getRideForUser = async(user: IUser)=> {
+const getRideForUser = async (user: IUser) => {
   const { email } = user;
-  
-  const rides = await Ride.find({ $or: [{rider: email}, {driver: email}]})
+
+  const rides = await Ride.find({
+    $or: [{ rider: email }, { driver: email }],
+    "status.state": { $ne: RideStatus.cancelled },
+  });
 
   return rides;
-}
+};
 
 const createRide = async (payload: IRide, user: IUser) => {
   const { email } = user;
 
-  const isRunningRide = await Ride.findOne({rider: email});
+  const isRunningRide = await Ride.findOne({
+    rider: email,
+    "status.state": { $ne: RideStatus.cancelled },
+  });
+  
 
-  if(isRunningRide) {
+  if (isRunningRide) {
     throw new AppError(400, "You are already in a ride");
   }
 
@@ -48,6 +55,27 @@ const updateRideStatus = async (
   const { status } = payload as { status: string };
   const { email } = user;
 
+  const ride = await Ride.findById(id);
+
+  if (!ride) {
+    throw new AppError(404, "Ride not found");
+  }
+
+  if (ride.status[ride.status.length - 1].state === RideStatus.cancelled) {
+    throw new AppError(400, "Ride is Already cancelled");
+  }
+
+  if (
+    ride.status[ride.status.length - 1].state === RideStatus.requested &&
+    status === RideStatus.cancelled
+  ) {
+    return await Ride.findByIdAndUpdate(
+      id,
+      { status: [...ride.status, { state: status }] },
+      { new: true }
+    );
+  }
+
   const isAvailableDriver = await User.findOne({
     email,
     role: UserRole.driver,
@@ -63,8 +91,6 @@ const updateRideStatus = async (
     throw new AppError(400, "Please update your vehicle info");
   }
 
-  const ride = await Ride.findById(id);
-
   if (ride?.rider === isAvailableDriver.email) {
     throw new AppError(400, "You cannot handle your requested ride");
   }
@@ -76,10 +102,6 @@ const updateRideStatus = async (
       400,
       "You cannot accept another ride during a in transiter ride"
     );
-  }
-
-  if (!ride) {
-    throw new AppError(404, "Ride not found");
   }
 
   if (status === RideStatus.requested) {

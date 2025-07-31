@@ -6,6 +6,7 @@ import { env } from "./config/env.config";
 import "./config/passport.config";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
+import { notFound } from "./middleware/routeNotFound";
 
 const app = express();
 
@@ -27,5 +28,6 @@ app.get("/", (req, res) => {
 });
 
 app.use(globalErrorHandler);
+app.use(notFound);
 
 export default app;

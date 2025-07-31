@@ -65,7 +65,7 @@ const userBlockUpdate = catchAsync(async(req: Request, res: Response) => {
      message: "User Block Status Updated Successfully",
      data,
    });
-})
+});
 
 export const UserController = {
   getAllUser,
