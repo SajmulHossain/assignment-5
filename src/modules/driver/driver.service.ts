@@ -11,6 +11,10 @@ const approveDriver = async (id: string) => {
 
   driver.driverApprovalStatus = DriverApprovalStatus.approve;
   await driver.save();
+
+   return {
+     driverStatus: driver.driverApprovalStatus,
+   };
 };
 
 const suspendDriver = async (id: string) => {
@@ -21,7 +25,13 @@ const suspendDriver = async (id: string) => {
   }
 
   driver.driverApprovalStatus = DriverApprovalStatus.suspend;
+  driver.isDriverActive = false;
+  
   await driver.save();
+
+  return {
+    driverStatus: driver.driverApprovalStatus
+  }
 };
 
 const updateDriverActiveStatus = async (id: string) => {
@@ -34,6 +44,9 @@ const updateDriverActiveStatus = async (id: string) => {
   driver.isDriverActive = !driver.isDriverActive;
 
   await driver.save();
+  return {
+    status: driver.isDriverActive
+  }
 };
 
 

@@ -7,8 +7,8 @@ const router = Router();
 
 
 
-router.patch("/driver/active", checkAuth(UserRole.driver), DriverController.updateDriverActiveStatus);
-router.patch("/driver/approve/:id", checkAuth(UserRole.admin), DriverController.approveDriver);
-router.patch("/driver/suspend/:id", checkAuth(UserRole.admin), DriverController.suspendDriver);
+router.patch("/active", checkAuth(UserRole.driver), DriverController.updateDriverActiveStatus);
+router.patch("/approve/:id", checkAuth(UserRole.admin), DriverController.approveDriver);
+router.patch("/suspend/:id", checkAuth(UserRole.admin), DriverController.suspendDriver);
 
-export const RiderRoutes = router;
+export const DriverRoutes = router;
