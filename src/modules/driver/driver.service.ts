@@ -1,4 +1,6 @@
 import AppError from "../../utils/AppError";
+import { RideStatus } from "../ride/ride.interface";
+import { Ride } from "../ride/ride.model";
 import { DriverApprovalStatus, UserRole } from "../user/user.interface";
 import { User } from "../user/user.model";
 
@@ -49,9 +51,44 @@ const updateDriverActiveStatus = async (id: string) => {
   }
 };
 
+const driverEarning = async(email: string) => {
+  const [totalIncome] = await Ride.aggregate([
+    {
+      $match: { driver: email, "status.state": RideStatus.completed },
+    },
+    {
+      $group: {
+        _id: null,
+        totalIncome: {$sum: "$amount"}
+      }
+    },
+    {
+      $project: {
+        _id: false
+      }
+    }
+  ]);
+
+  const rides = await Ride.find({
+    driver: email,
+    "status.state": RideStatus.completed,
+  });
+
+  const history = rides.map(ride => {
+    return {
+      amount: ride.amount,
+      from: ride.pickup,
+      to: ride.destination,
+      at: ride.status.find(state => state.state === RideStatus.completed)?.createdAt,
+    }
+  })
+
+  return {...totalIncome, history}
+}
 
 export const DriverService = {
   suspendDriver,
   approveDriver,
   updateDriverActiveStatus,
+  driverEarning,
 };
