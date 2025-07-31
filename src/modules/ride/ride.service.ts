@@ -25,9 +25,9 @@ const getRideForUser = async (user: IUser) => {
 const createRide = async (payload: IRide, user: IUser) => {
   const { email } = user;
 
-  const isAvailableDriver = await User.find({ role: UserRole.driver, driverApprovalStatus: DriverApprovalStatus.approve, isDriverActive: true });
+  const isAvailableDriver = await User.find({ email: { $ne: user.email }, role: UserRole.driver, driverApprovalStatus: DriverApprovalStatus.approve, isDriverActive: true });
 
-  if(!isAvailableDriver) {
+  if(!isAvailableDriver.length) {
     throw new AppError(404, "No driver available right now. Please wait and try again later")
   }
 
