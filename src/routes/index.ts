@@ -12,7 +12,7 @@ interface IRoutes {
 
 const routes: IRoutes[] = [
   { path: "/auth", routes: AuthRoutes },
-  { path: "/user", routes: UserRoutes },
+  { path: "/users", routes: UserRoutes },
   { path: "/rides", routes: RideRoutes }
 ];
 

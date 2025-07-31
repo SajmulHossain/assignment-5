@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
     "lint": "npx eslint ./src",
-    "deploy": "npm run build && vercel --prod"
+    "deploy": "npm run build && vercel --prod && git push"
   },
   "keywords": [],
   "author": "",
