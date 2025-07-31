@@ -89,7 +89,7 @@ const updateRideStatus = async (
   }
 
   const isAvailableDriver = await User.findOne({
-    email,
+    email: ride.driver,
     role: UserRole.driver,
     isDriverActive: true,
     driverApprovalStatus: DriverApprovalStatus.approve,
@@ -170,7 +170,6 @@ const updateRideStatus = async (
 
 const rideHistory = async(email: string) => {
   const rides = await Ride.find({rider: email, "status.state": RideStatus.completed})
-
 
   return {
     history: rides.map(ride => {
