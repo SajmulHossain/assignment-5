@@ -8,6 +8,7 @@ import { UserRole } from "./user.interface";
 const router = Router();
 
 router.get("/", checkAuth(UserRole.admin), UserController.getAllUser);
+router.patch("/driver/active", checkAuth(UserRole.driver), UserController.updateDriverActiveStatus);
 router.get("/:id", checkAuth(UserRole.admin), UserController.getSingleUser);
 router.patch("/driver/access/:id", checkAuth(UserRole.admin), UserController.driverAccessUpdate);
 router.patch("/block/:id", checkAuth(UserRole.admin), UserController.userBlockUpdate);

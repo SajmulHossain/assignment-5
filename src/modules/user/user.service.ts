@@ -43,10 +43,23 @@ const userBlockUpdate = async(id:string) => {
     await user.save();
 }
 
+const updateDriverActiveStatus = async(id: string) => {
+    const driver = await User.findOne({ _id: id, role: UserRole.driver });
+
+    if(!driver) {
+        throw new AppError(404, 'Driver not found');
+    }
+
+    driver.isDriverActive = !driver.isDriverActive;
+
+    await driver.save();
+}
+
 export const UserService = {
     getAllUser,
     getSingleUser,
     updateUser,
     driverAccessUpdate,
-    userBlockUpdate
+    userBlockUpdate,
+    updateDriverActiveStatus
 }

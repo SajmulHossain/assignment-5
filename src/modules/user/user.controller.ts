@@ -67,10 +67,22 @@ const userBlockUpdate = catchAsync(async(req: Request, res: Response) => {
    });
 });
 
+const updateDriverActiveStatus = catchAsync(async(req: Request, res: Response) => {
+  const { id } = req.user as JwtPayload;
+  const data = await UserService.updateDriverActiveStatus(id)
+
+   sendResponse(res, {
+     statusCode: 200,
+     message: "Status Updated successfully",
+     data,
+   });
+})
+
 export const UserController = {
   getAllUser,
   getSingleUser,
   updateUser,
   driverAccessUpdate,
-  userBlockUpdate
+  userBlockUpdate,
+  updateDriverActiveStatus,
 };
