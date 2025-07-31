@@ -95,7 +95,7 @@ const updateRideStatus = async (
     throw new AppError(400, "You cannot handle your requested ride");
   }
 
-  const isOnRide = await Ride.findOne({ driver: email });
+  const isOnRide = await Ride.findOne({_id: { $ne: ride._id }, driver: email });
 
   if (isOnRide) {
     throw new AppError(
@@ -118,7 +118,7 @@ const updateRideStatus = async (
   ) {
     throw new AppError(
       400,
-      `You cannot cancel the ride now, ride is ${ride?.status}`
+      `You cannot cancel the ride now, ride is ${ride?.status[ride.status.length - 1].state}`
     );
   }
 
