@@ -4,6 +4,16 @@ import { sendResponse } from "../../utils/sendResponse";
 import { IUser } from "../user/user.interface";
 import { RideService } from "./ride.service";
 
+const getAllRides = catchAsync(async (req: Request, res: Response) => {
+  const data = await RideService.getAllRides();
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Rides retrived successfully",
+    data,
+  });
+})
+
 const getRideForUser = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const data = await RideService.getRideForUser(user as IUser);
@@ -41,8 +51,21 @@ const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const rideHistory =  catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.user as IUser;
+  const data = await RideService.rideHistory(email);
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Rides history retrived successfully",
+    data,
+  });
+})
+
 export const RideController = {
   createRide,
   updateRideStatus,
-  getRideForUser
+  getRideForUser,
+  getAllRides,
+  rideHistory,
 };

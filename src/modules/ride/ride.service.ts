@@ -5,6 +5,12 @@ import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
+const getAllRides = async() => {
+  const rides = await Ride.find({});
+
+  return rides;
+}
+
 const getRideForUser = async (user: IUser) => {
   const { email } = user;
 
@@ -156,8 +162,30 @@ const updateRideStatus = async (
   return data;
 };
 
+const rideHistory = async(email: string) => {
+  const rides = await Ride.find({rider: email, "status.state": RideStatus.completed})
+
+
+  return {
+    history: rides.map(ride => {
+      return {
+        from: {
+          place: ride.pickup.place_name,
+          at: ride.status[1].createdAt,
+        },
+        to: {
+          place: ride.destination.place_name,
+          at: ride.status[ride.status.length - 1].createdAt,
+        },
+      };
+    })
+  };
+}
+
 export const RideService = {
   getRideForUser,
   createRide,
   updateRideStatus,
+  getAllRides,
+  rideHistory,
 };

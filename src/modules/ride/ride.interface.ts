@@ -12,6 +12,7 @@ export enum RideStatus {
 export interface IRideStatus {
   timestamps?: Date;
   state: RideStatus;
+  createdAt?: Date;
 }
 
 export interface IDestination {
