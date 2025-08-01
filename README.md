@@ -77,5 +77,24 @@ src/
 ├── utils/
 ├── app.ts
 ```
+
+## ⚙️ Environment Variables
+You must create a `.env` file in the **root folder** with the following variables:
+
+```
+MONGODB_URI=<your_mongodb_connection_string>
+PORT=<server_port>
+NODE_ENV=development | production
+EXPRESS_SESSION_SECRET=<your_session_secret>
+BCRYPT_SALT_ROUND=<number_of_salt_rounds>
+JWT_ACCESS_SECRET=<access_token_secret>
+JWT_ACCESS_EXP=<access_token_expiration>
+JWT_REFRESH_SECRET=<refresh_token_secret>
+JWT_REFRESH_EXP=<refresh_token_expiration>
+```
+
+## 📬 Postman Collection
+A **Postman demo JSON** file is provided in the **root folder** for testing all API requests.
+
 ---
 📌 **Extra Features:** Optional features like driver ratings, rider feedback, fare estimation.
