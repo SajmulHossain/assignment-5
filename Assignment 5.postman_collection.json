@@ -1,0 +1,514 @@
+{
+	"info": {
+		"_postman_id": "89533bfd-2dce-45e8-ad97-802850bc6ea1",
+		"name": "Assignment 5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45982907",
+		"_collection_link": "https://sajmulhossain-5274417.postman.co/workspace/82e4a398-4dbe-4421-8292-189f4cbd16d4/collection/45982907-89533bfd-2dce-45e8-ad97-802850bc6ea1?action=share&source=collection_link&creator=45982907"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Single User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prodURL}}/api/v1/users/6888f6696d5f77fb69e33204",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"6888f6696d5f77fb69e33204"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single All User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prodURL}}/api/v1/users",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phone\": \"+8801888118811\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/users/update/zihan15@gmail.com",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"update",
+								"zihan15@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Block Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{prodURL}}/api/v1/users/block/688c849f75708009c785a90d",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"block",
+								"688c849f75708009c785a90d"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auths",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"email\": \"sajmul21@gmail.com\",\r\n    \"password\": \"S@jmul12\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/auth/login",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"\",\r\n    \"password\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/auth/logout",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Sajmul\",\r\n    \"email\": \"zihan14@gmail.com\",\r\n    \"password\": \"S@jmul12\",\r\n    \"role\": \"driver\",\r\n    \"phone\": \"01876542813\",\r\n    \"vehicleInfo\": {\r\n        \"model\": \"Suzuki Gixxer\",\r\n        \"registration_no\": \"Chatto Metro HA 11-1829\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/auth/register",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rides",
+			"item": [
+				{
+					"name": "History",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    [\r\n        {\r\n            \"state\": \"picked_up\",\r\n            \"pickupLocation\": \"string\"\r\n        },\r\n        {\r\n            \"state\": \"completed\",\r\n            \"destination\": \"string\"\r\n        }\r\n    ]\r\n]"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/rides/history",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all rides for admin",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/rides/all-rides",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"all-rides"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Ride for ME",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    [\r\n        {\r\n            \"state\": \"picked_up\",\r\n            \"pickupLocation\": \"string\"\r\n        },\r\n        {\r\n            \"state\": \"completed\",\r\n            \"destination\": \"string\"\r\n        }\r\n    ]\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/rides/me",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST DATA",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pickup\": {\r\n        \"place_name\": \"Mirsarai, Chattogram\",\r\n        \"coordinate\": [21.4060000, 92.8042321]\r\n    },\r\n    \"destination\": {\r\n        \"place_name\": \"Borotakia, Chattogram\",\r\n        \"coordinate\": [21.3702066, 92.8428910]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/rides/request",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Data With PATCH",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"status\": \"accepted\"\r\n    // \"status\": \"picked_up\"\r\n    // \"status\": \"in_transit\"\r\n    \"status\": \"completed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/rides/688c87a775708009c785a92c/status",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"rides",
+								"688c87a775708009c785a92c",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Driver",
+			"item": [
+				{
+					"name": "Earning History",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    [\r\n        {\r\n            \"state\": \"picked_up\",\r\n            \"pickupLocation\": \"string\"\r\n        },\r\n        {\r\n            \"state\": \"completed\",\r\n            \"destination\": \"string\"\r\n        }\r\n    ]\r\n]"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/drivers/earning",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								"earning"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Suspend Driver",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tour\": \"688066b8f823798338fda517\",\r\n    \"guestCount\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/drivers/suspend/6888f6ac20ce3b6e180a0039",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								"suspend",
+								"6888f6ac20ce3b6e180a0039"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Driver",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tour\": \"688066b8f823798338fda517\",\r\n    \"guestCount\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/drivers/approve/688c848391786918f456dc74",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								"approve",
+								"688c848391786918f456dc74"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Active status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tour\": \"688066b8f823798338fda517\",\r\n    \"guestCount\": 2\r\n}"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/drivers/active",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"drivers",
+								"active"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "Get Feedback for Ride",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"pickup\": {\r\n        \"place_name\": \"Mirsarai, Chattogram\",\r\n        \"coordinate\": [21.4060000, 92.8042321]\r\n    },\r\n    \"destination\": {\r\n        \"place_name\": \"Borotakia, Chattogram\",\r\n        \"coordinate\": [21.3702066, 92.8428910]\r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/feedbacks/688b9e182839331fd1c865dc",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"feedbacks",
+								"688b9e182839331fd1c865dc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Feedback",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"rating\": 4,\r\n   \"feedback\": \"What a nice driver he is!\",\r\n   \"ride_info\": \"688b7908a93ed850d91dc9de\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{prodURL}}/api/v1/feedbacks",
+							"host": [
+								"{{prodURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"feedbacks"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
