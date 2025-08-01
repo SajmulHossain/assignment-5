@@ -88,18 +88,18 @@ const updateRideStatus = async (
     );
   }
 
-  const isAvailableDriver = await User.findOne({
-    email: ride.driver || user.email,
-    role: UserRole.driver,
-    isDriverActive: true,
-    driverApprovalStatus: DriverApprovalStatus.approve,
-  });
-
-  console.log(ride);
-
   const theDriver = await User.findOne({email: ride.driver});
 
-  console.log(theDriver, '--->', isAvailableDriver);
+  if(!theDriver) {
+    throw new AppError(404, "Driver not found");
+  }
+
+    const isAvailableDriver = await User.findOne({
+      email: ride.driver || user.email,
+      role: UserRole.driver,
+      isDriverActive: true,
+      driverApprovalStatus: DriverApprovalStatus.approve,
+    });
 
   if (!isAvailableDriver) {
     throw new AppError(404, `Driver is ${!theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available'}`);
