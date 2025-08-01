@@ -73,14 +73,6 @@ const updateRideStatus = async (
     throw new AppError(404, "Ride not found");
   }
 
-  const isValidRequest = await Ride.findOne({_id: id, $or: [{ driver: email }, { rider: email }] });
-
-  console.log(isValidRequest);
-
-  if(!isValidRequest) {
-    throw new AppError(403, "Unauthorized operation");
-  }
-
   if (ride.status[ride.status.length - 1].state === RideStatus.cancelled) {
     throw new AppError(400, "Ride is Already cancelled");
   }
@@ -107,7 +99,7 @@ const updateRideStatus = async (
 
 
   if (!isAvailableDriver) {
-    throw new AppError(404, `Driver is ${theDriver ? !theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available' : "not found"}`);
+    throw new AppError(404, `Driver is ${theDriver ? !theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available' : "not valid"}`);
   }
 
   if (!isAvailableDriver?.vehicleInfo?.model) {
