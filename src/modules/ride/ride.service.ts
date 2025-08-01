@@ -5,11 +5,11 @@ import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
 
-const getAllRides = async() => {
+const getAllRides = async () => {
   const rides = await Ride.find({});
 
   return rides;
-}
+};
 
 const getRideForUser = async (user: IUser) => {
   const { email } = user;
@@ -25,17 +25,24 @@ const getRideForUser = async (user: IUser) => {
 const createRide = async (payload: IRide, user: IUser) => {
   const { email } = user;
 
-  const isAvailableDriver = await User.find({ email: { $ne: user.email }, role: UserRole.driver, driverApprovalStatus: DriverApprovalStatus.approve, isDriverActive: true });
+  const isAvailableDriver = await User.find({
+    email: { $ne: user.email },
+    role: UserRole.driver,
+    driverApprovalStatus: DriverApprovalStatus.approve,
+    isDriverActive: true,
+  });
 
-  if(!isAvailableDriver.length) {
-    throw new AppError(404, "No driver available right now. Please wait and try again later")
+  if (!isAvailableDriver.length) {
+    throw new AppError(
+      404,
+      "No driver available right now. Please wait and try again later"
+    );
   }
 
   const isRunningRide = await Ride.findOne({
     rider: email,
     "status.state": { $ne: RideStatus.cancelled },
   });
-  
 
   if (isRunningRide) {
     throw new AppError(400, "You are already in a ride");
@@ -78,6 +85,18 @@ const updateRideStatus = async (
   }
 
   if (
+    user.role === UserRole.driver &&
+    ride.status[ride.status.length - 1].state === RideStatus.requested &&
+    status === RideStatus.cancelled
+  ) {
+    throw new AppError(
+      400,
+      "As driver you accept it or ignore. You cannot cancel it"
+    );
+  }
+
+  if (
+    user.role === UserRole.rider &&
     ride.status[ride.status.length - 1].state === RideStatus.requested &&
     status === RideStatus.cancelled
   ) {
@@ -88,18 +107,31 @@ const updateRideStatus = async (
     );
   }
 
-  const theDriver = await User.findOne({ email: ride.driver || user.email, role: UserRole.driver });
+  const theDriver = await User.findOne({
+    email: ride.driver || user.email,
+    role: UserRole.driver,
+  });
 
-    const isAvailableDriver = await User.findOne({
-      email: ride.driver || user.email,
-      role: UserRole.driver,
-      isDriverActive: true,
-      driverApprovalStatus: DriverApprovalStatus.approve,
-    });
-
+  const isAvailableDriver = await User.findOne({
+    email: ride.driver || user.email,
+    role: UserRole.driver,
+    isDriverActive: true,
+    driverApprovalStatus: DriverApprovalStatus.approve,
+  });
 
   if (!isAvailableDriver) {
-    throw new AppError(404, `Driver is ${theDriver ? !theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available' : "not valid"}`);
+    throw new AppError(
+      404,
+      `Driver is ${
+        theDriver
+          ? !theDriver?.isDriverActive
+            ? "inactive"
+            : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend
+            ? "suspended"
+            : "not available"
+          : "not valid"
+      }`
+    );
   }
 
   if (!isAvailableDriver?.vehicleInfo?.model) {
@@ -110,7 +142,10 @@ const updateRideStatus = async (
     throw new AppError(400, "You cannot handle your requested ride");
   }
 
-  const isOnRide = await Ride.findOne({_id: { $ne: ride._id }, driver: email });
+  const isOnRide = await Ride.findOne({
+    _id: { $ne: ride._id },
+    driver: email,
+  });
 
   if (isOnRide) {
     throw new AppError(
@@ -133,7 +168,9 @@ const updateRideStatus = async (
   ) {
     throw new AppError(
       400,
-      `You cannot cancel the ride now, ride is ${ride?.status[ride.status.length - 1].state}`
+      `You cannot cancel the ride now, ride is ${
+        ride?.status[ride.status.length - 1].state
+      }`
     );
   }
 
@@ -171,11 +208,14 @@ const updateRideStatus = async (
   return data;
 };
 
-const rideHistory = async(email: string) => {
-  const rides = await Ride.find({rider: email, "status.state": RideStatus.completed})
+const rideHistory = async (email: string) => {
+  const rides = await Ride.find({
+    rider: email,
+    "status.state": RideStatus.completed,
+  });
 
   return {
-    history: rides.map(ride => {
+    history: rides.map((ride) => {
       return {
         from: {
           place: ride.pickup.place_name,
@@ -186,9 +226,9 @@ const rideHistory = async(email: string) => {
           at: ride.status[ride.status.length - 1].createdAt,
         },
       };
-    })
+    }),
   };
-}
+};
 
 export const RideService = {
   getRideForUser,
