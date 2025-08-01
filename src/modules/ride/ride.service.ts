@@ -95,8 +95,10 @@ const updateRideStatus = async (
     driverApprovalStatus: DriverApprovalStatus.approve,
   });
 
+  const theDriver = await User.findOne({email: ride.driver});
+
   if (!isAvailableDriver) {
-    throw new AppError(404, "Driver is not available");
+    throw new AppError(404, `Driver is ${!theDriver?.isDriverActive ? "inactive" : theDriver.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available'}`);
   }
 
   if (!isAvailableDriver?.vehicleInfo?.model) {
