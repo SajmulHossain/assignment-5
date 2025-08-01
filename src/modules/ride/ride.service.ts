@@ -73,7 +73,9 @@ const updateRideStatus = async (
     throw new AppError(404, "Ride not found");
   }
 
-  const isValidRequest = await Ride.findOne({ $or: [{ driver: email }, { rider: email }] });
+  const isValidRequest = await Ride.findOne({_id: id, $or: [{ driver: email }, { rider: email }] });
+
+  console.log(isValidRequest);
 
   if(!isValidRequest) {
     throw new AppError(403, "Unauthorized operation");
@@ -94,11 +96,7 @@ const updateRideStatus = async (
     );
   }
 
-  const theDriver = await User.findOne({ email: ride.driver || user.email });
-
-  if(!theDriver) {
-    throw new AppError(404, "Driver not found");
-  }
+  const theDriver = await User.findOne({ email: ride.driver || user.email, role: UserRole.driver });
 
     const isAvailableDriver = await User.findOne({
       email: ride.driver || user.email,
@@ -107,8 +105,9 @@ const updateRideStatus = async (
       driverApprovalStatus: DriverApprovalStatus.approve,
     });
 
+
   if (!isAvailableDriver) {
-    throw new AppError(404, `Driver is ${!theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available'}`);
+    throw new AppError(404, `Driver is ${theDriver ? !theDriver?.isDriverActive ? "inactive" : theDriver?.driverApprovalStatus === DriverApprovalStatus.suspend ? 'suspended' : 'not available' : "not found"}`);
   }
 
   if (!isAvailableDriver?.vehicleInfo?.model) {
