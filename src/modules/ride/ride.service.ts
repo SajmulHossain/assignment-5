@@ -73,6 +73,12 @@ const updateRideStatus = async (
     throw new AppError(404, "Ride not found");
   }
 
+  const isValidRequest = await Ride.findOne({ $or: [{ driver: email }, { rider: email }] });
+
+  if(!isValidRequest) {
+    throw new AppError(403, "Unauthorized operation");
+  }
+
   if (ride.status[ride.status.length - 1].state === RideStatus.cancelled) {
     throw new AppError(400, "Ride is Already cancelled");
   }
@@ -88,7 +94,7 @@ const updateRideStatus = async (
     );
   }
 
-  const theDriver = await User.findOne({email: ride.driver});
+  const theDriver = await User.findOne({ email: ride.driver || user.email });
 
   if(!theDriver) {
     throw new AppError(404, "Driver not found");
