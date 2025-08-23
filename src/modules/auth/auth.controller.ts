@@ -9,12 +9,25 @@ import { clearCookie, setToken } from "../../utils/setToken";
 import { createToken } from "../../utils/token";
 import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
 import { AuthService } from "./auth.service";
+import { JwtPayload } from "jsonwebtoken";
+
+const getMe = catchAsync(async(req: Request, res: Response) => {
+  const decodedToken = req.user as JwtPayload;
+  const data = await AuthService.getMe(decodedToken.id as string);
+
+  sendResponse(res, {
+    data,
+    message: "User retrived successfully",
+    statusCode: 201,
+  });
+})
 
 const register = catchAsync(async (req: Request, res: Response) => {
-
-  const user = await AuthService.register(req.body);
+  
+  const data = await AuthService.register(req.body);
+  
   sendResponse(res, {
-    data: user,
+    data,
     message: "User created successfully",
     statusCode: 201,
   });
@@ -72,5 +85,6 @@ const logout = catchAsync(async(req: Request, res: Response) => {
 export const AuthController = {
   register,
   login,
-  logout
+  logout,
+  getMe
 };

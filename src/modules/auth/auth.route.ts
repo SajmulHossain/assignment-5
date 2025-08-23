@@ -8,8 +8,9 @@ import { loginZodSchema } from "./auth.validation";
 
 const router = Router();
 
-router.post("/register",validateReqBody(createUserZodSchema), AuthController.register);
+router.get("/me", checkAuth(...Object.values(UserRole)), AuthController.getMe);
+router.post("/register", validateReqBody(createUserZodSchema), AuthController.register);
 router.post("/login", validateReqBody(loginZodSchema), AuthController.login);
-router.post("/logout", checkAuth(...Object.values(UserRole)), AuthController.logout)
+router.post("/logout", checkAuth(...Object.values(UserRole)), AuthController.logout);
 
 export const AuthRoutes = router;

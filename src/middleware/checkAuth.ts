@@ -36,6 +36,6 @@ export const checkAuth = (...roles: string[]) => catchAsync(async (req: Request,
       throw new AppError(403, "You are not permitted");
     }
 
-    req.user = isUserExist;
+    req.user = verifiedToken;
     next();
   });
