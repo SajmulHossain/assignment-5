@@ -7,8 +7,13 @@ import "./config/passport.config";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
 import { notFound } from "./middleware/routeNotFound";
+import cors from 'cors';
 
 const app = express();
+app.use(cors({
+  origin: env.frontend_url,
+  credentials: true
+}))
 
 app.use(express.json());
 app.use(session({

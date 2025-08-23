@@ -14,6 +14,7 @@ interface EnvConfig {
   node_env: "development" | "production";
   express_session_secret: string;
   bcrypt_salt_round: string;
+frontend_url: string;
   jwt: {
     jwt_access_secret: string;
     jwt_access_exp: string;
@@ -33,6 +34,7 @@ const loadEnvVars = (): EnvConfig => {
     "JWT_REFRESH_SECRET",
     "JWT_REFRESH_EXP",
     "EXPRESS_SESSION_SECRET",
+    "FRONTEND_URL",
   ];
 
   requiredVars.forEach((val) => {
@@ -53,6 +55,7 @@ const loadEnvVars = (): EnvConfig => {
       jwt_refresh_secret: process.env.JWT_REFRESH_SECRET as string,
       jwt_refresh_exp: process.env.JWT_REFRESH_EXP as string,
     },
+    frontend_url: process.env.FRONTEND_URL as string,
   };
 };
 

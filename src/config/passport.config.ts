@@ -18,7 +18,7 @@ passport.use(
           return done(null, false, { message: "User doesn't exist" });
         }
 
-        const isPasswordMatched = await compare(password, isUserExist.password);
+        const isPasswordMatched = await compare(password, isUserExist.password as string);
 
         if (!isPasswordMatched) {
           return done(null, false, { message: "Password didn't matched" });
