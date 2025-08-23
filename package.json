@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "dev": "set NODE_ENV=development&& ts-node-dev --respawn --transpile-only ./src/server.ts",
     "lint": "npx eslint ./src",
     "deploy": "npm run build && vercel --prod && git push"
   },
