@@ -11,7 +11,7 @@ export const setToken = (res:Response, token: IToken) => {
     res.cookie("accessToken", token.accessToken, {
         httpOnly: true,
         secure: env.node_env === "production",
-        sameSite: "lax"
+        sameSite: "none"
     })
   }
 
@@ -19,7 +19,7 @@ export const setToken = (res:Response, token: IToken) => {
     res.cookie("refreshToken", token.refreshToken, {
       httpOnly: true,
       secure: env.node_env === "production",
-      sameSite: "lax",
+      sameSite: "none",
     });
   }
 };
