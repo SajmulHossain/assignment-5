@@ -1,9 +1,13 @@
 import AppError from "../../utils/AppError";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 import { IUser } from "./user.interface";
 import { User } from "./user.model";
 
-const getAllUser = async() => {
-    const users = await User.find().select("-password");
+const getAllUser = async(query: Record<string, string>) => {
+    const queryBuilder = new QueryBuilder(User.find().select("-password"), query);
+    const data = queryBuilder.filter();
+
+    const users = await data.build();
 
     return users;
 }

@@ -6,7 +6,9 @@ import AppError from "../../utils/AppError";
 import { JwtPayload } from "jsonwebtoken";
 
 const getAllUser = catchAsync(async(req: Request, res: Response) => {
-  const data = await UserService.getAllUser();
+  const data = await UserService.getAllUser(
+    req.query as Record<string, string>
+  );
 
   sendResponse(res, {
     statusCode: 200,
