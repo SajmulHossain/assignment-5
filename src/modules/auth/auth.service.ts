@@ -1,3 +1,4 @@
+import { compare } from "bcryptjs";
 import AppError from "../../utils/AppError";
 import { encryptPassword } from "../../utils/encryptPassword";
 import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
@@ -37,7 +38,29 @@ const register = async (payload: IUser) => {
   return data;
 };
 
+const changePassword = async (
+  current_password: string,
+  new_password: string,
+  id: string
+) => {
+  const user = await User.findById(id);
+
+  const isCurrentPassMatched = await compare(
+    current_password,
+    user?.password as string
+  );
+
+  if (!isCurrentPassMatched) {
+    throw new AppError(401, "Old Password didn't matched");
+  }
+  
+  await User.findByIdAndUpdate(id, {
+    password: await encryptPassword(new_password),
+  });
+};
+
 export const AuthService = {
   register,
   getMe,
+  changePassword,
 };

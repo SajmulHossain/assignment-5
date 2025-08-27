@@ -4,7 +4,7 @@ import { validateReqBody } from "../../middleware/validateRequestBody";
 import { UserRole } from "../user/user.interface";
 import { createUserZodSchema } from "../user/user.validation";
 import { AuthController } from "./auth.controller";
-import { loginZodSchema } from "./auth.validation";
+import { changePasswordZodSchema, loginZodSchema } from "./auth.validation";
 
 const router = Router();
 
@@ -12,5 +12,6 @@ router.get("/me", checkAuth(...Object.values(UserRole)), AuthController.getMe);
 router.post("/register", validateReqBody(createUserZodSchema), AuthController.register);
 router.post("/login", validateReqBody(loginZodSchema), AuthController.login);
 router.post("/logout", checkAuth(...Object.values(UserRole)), AuthController.logout);
+router.patch("/change-password", validateReqBody(changePasswordZodSchema), checkAuth(...Object.values(UserRole)), AuthController.changePassword);
 
 export const AuthRoutes = router;

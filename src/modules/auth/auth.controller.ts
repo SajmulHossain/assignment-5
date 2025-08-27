@@ -11,7 +11,7 @@ import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
 import { AuthService } from "./auth.service";
 import { JwtPayload } from "jsonwebtoken";
 
-const getMe = catchAsync(async(req: Request, res: Response) => {
+const getMe = catchAsync(async (req: Request, res: Response) => {
   const decodedToken = req.user as JwtPayload;
   const data = await AuthService.getMe(decodedToken.id as string);
 
@@ -20,13 +20,12 @@ const getMe = catchAsync(async(req: Request, res: Response) => {
     message: "User retrived successfully",
     statusCode: 201,
   });
-})
+});
 
 const register = catchAsync(async (req: Request, res: Response) => {
-  
   const data = await AuthService.register(req.body);
-  
-  const token = createToken(data)
+
+  const token = createToken(data);
   setToken(res, token);
   sendResponse(res, {
     data,
@@ -74,7 +73,7 @@ const login = catchAsync(
   }
 );
 
-const logout = catchAsync(async(req: Request, res: Response) => {
+const logout = catchAsync(async (req: Request, res: Response) => {
   clearCookie(res);
 
   sendResponse(res, {
@@ -82,11 +81,28 @@ const logout = catchAsync(async(req: Request, res: Response) => {
     message: "Logged out successfully",
     data: null,
   });
-})
+});
+
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.user as JwtPayload;
+  const { current_password, new_password } = req.body;
+  const data = await AuthService.changePassword(
+    current_password,
+    new_password,
+    id
+  );
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Password changed successfully",
+    data,
+  });
+});
 
 export const AuthController = {
   register,
   login,
   logout,
-  getMe
+  getMe,
+  changePassword
 };
