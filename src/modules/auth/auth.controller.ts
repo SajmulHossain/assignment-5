@@ -26,6 +26,8 @@ const register = catchAsync(async (req: Request, res: Response) => {
   
   const data = await AuthService.register(req.body);
   
+  const token = createToken(data)
+  setToken(res, token);
   sendResponse(res, {
     data,
     message: "User created successfully",
