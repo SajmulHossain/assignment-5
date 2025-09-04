@@ -231,7 +231,10 @@ const rideHistory = async (email: string) => {
 };
 
 const getSingleRide = async(email: string) => {
-  const ride = await Ride.findOne({rider: email, status: RideStatus.requested});
+  const ride = await Ride.findOne({
+    rider: email,
+    status: {$nin: [{state: RideStatus.completed}, {state:RideStatus.cancelled}]},
+  });
 
   if(!ride) {
     throw new AppError(404, 'No ride found');
