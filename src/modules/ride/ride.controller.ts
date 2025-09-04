@@ -3,6 +3,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { IUser } from "../user/user.interface";
 import { RideService } from "./ride.service";
+import { JwtPayload } from "jsonwebtoken";
 
 const getAllRides = catchAsync(async (req: Request, res: Response) => {
   const data = await RideService.getAllRides();
@@ -12,7 +13,7 @@ const getAllRides = catchAsync(async (req: Request, res: Response) => {
     message: "Rides retrived successfully",
     data,
   });
-})
+});
 
 const getRideForUser = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
@@ -21,9 +22,9 @@ const getRideForUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: 200,
     message: "Rides retrived successfully",
-    data
-  })
-})
+    data,
+  });
+});
 
 const createRide = catchAsync(async (req: Request, res: Response) => {
   const data = await RideService.createRide(req.body, req.user as IUser);
@@ -51,7 +52,7 @@ const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const rideHistory =  catchAsync(async (req: Request, res: Response) => {
+const rideHistory = catchAsync(async (req: Request, res: Response) => {
   const { email } = req.user as IUser;
   const data = await RideService.rideHistory(email);
 
@@ -60,7 +61,18 @@ const rideHistory =  catchAsync(async (req: Request, res: Response) => {
     message: "Rides history retrived successfully",
     data,
   });
-})
+});
+
+const getSingleRide = catchAsync(async (req: Request, res: Response) => {
+  const user = req?.user as JwtPayload;
+  const data = await RideService.getSingleRide(user.email as string);
+
+  sendResponse(res, {
+    data,
+    message: "Ride retrived successfully",
+    statusCode: 200,
+  });
+});
 
 export const RideController = {
   createRide,
@@ -68,4 +80,5 @@ export const RideController = {
   getRideForUser,
   getAllRides,
   rideHistory,
+  getSingleRide
 };

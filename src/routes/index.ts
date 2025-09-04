@@ -4,6 +4,7 @@ import { DriverRoutes } from "../modules/driver/driver.route";
 import { RideRoutes } from "../modules/ride/ride.route";
 import { UserRoutes } from "../modules/user/user.route";
 import { FeedbackRoutes } from "../modules/feedback/feedback.route";
+import { AnalyticRoutes } from "../modules/analytics/analytic.route";
 
 export const router = Router();
 
@@ -18,6 +19,7 @@ const routes: IRoutes[] = [
   { path: "/rides", routes: RideRoutes },
   { path: "/drivers", routes: DriverRoutes },
   { path: "/feedbacks", routes: FeedbackRoutes },
+  { path: "/analytics", routes: AnalyticRoutes }
 ];
 
 routes.forEach((route) => {

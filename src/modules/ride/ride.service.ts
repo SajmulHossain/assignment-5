@@ -230,10 +230,21 @@ const rideHistory = async (email: string) => {
   };
 };
 
+const getSingleRide = async(email: string) => {
+  const ride = await Ride.findOne({rider: email, status: RideStatus.requested});
+
+  if(!ride) {
+    throw new AppError(404, 'No ride found');
+  }
+
+  return ride;
+}
+
 export const RideService = {
   getRideForUser,
   createRide,
   updateRideStatus,
   getAllRides,
   rideHistory,
+  getSingleRide
 };
