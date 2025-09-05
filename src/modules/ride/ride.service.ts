@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 import AppError from "../../utils/AppError";
 import { getDistance } from "../../utils/getDistance";
 import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
@@ -69,7 +70,7 @@ const createRide = async (payload: IRide, user: IUser) => {
 const updateRideStatus = async (
   id: string,
   payload: Record<string, string>,
-  user: IUser
+  user: JwtPayload
 ) => {
   const { status } = payload as { status: string };
   const { email } = user;

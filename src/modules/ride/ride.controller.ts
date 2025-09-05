@@ -42,7 +42,7 @@ const updateRideStatus = catchAsync(async (req: Request, res: Response) => {
   const data = await RideService.updateRideStatus(
     id,
     req.body as Record<string, string>,
-    req.user as IUser
+    req.user as JwtPayload
   );
 
   sendResponse(res, {
