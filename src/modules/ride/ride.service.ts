@@ -120,7 +120,7 @@ const updateRideStatus = async (
     driverApprovalStatus: DriverApprovalStatus.approve,
   });
 
-  if (!isAvailableDriver) {
+  if (ride.status.length > 1 && !isAvailableDriver) {
     throw new AppError(
       404,
       `Driver is ${
