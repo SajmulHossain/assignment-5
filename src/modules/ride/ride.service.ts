@@ -97,7 +97,7 @@ const updateRideStatus = async (
   }
 
   if (
-    user.role === UserRole.rider &&
+    ride.rider === user.email &&
     ride.status[ride.status.length - 1].state === RideStatus.requested &&
     status === RideStatus.cancelled
   ) {
@@ -135,11 +135,11 @@ const updateRideStatus = async (
     );
   }
 
-  if (!isAvailableDriver?.vehicleInfo?.model) {
+  if (isAvailableDriver && !isAvailableDriver?.vehicleInfo?.model) {
     throw new AppError(400, "Please update your vehicle info");
   }
 
-  if (ride?.rider === isAvailableDriver.email) {
+  if (ride?.rider === isAvailableDriver?.email) {
     throw new AppError(400, "You cannot handle your requested ride");
   }
 
