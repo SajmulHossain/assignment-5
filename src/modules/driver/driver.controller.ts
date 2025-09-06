@@ -52,9 +52,21 @@ const driverEarning = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getActiveStatus = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.user as JwtPayload;
+  const data = await DriverService.getActiveStatus(email);
+
+  sendResponse(res, {
+    statusCode: 200,
+    message: "Status retrived",
+    data,
+  });
+});
+
 export const DriverController = {
   suspendDriver,
   approveDriver,
   updateDriverActiveStatus,
   driverEarning,
+  getActiveStatus,
 };
