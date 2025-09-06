@@ -231,18 +231,20 @@ const rideHistory = async (email: string) => {
   };
 };
 
-const getSingleRide = async(email: string) => {
+const getSingleRide = async (email: string) => {
   const ride = await Ride.findOne({
     rider: email,
-    status: {$nin: [{state: RideStatus.completed}, {state:RideStatus.cancelled}]},
+    "status.state": {
+      $nin: [RideStatus.cancelled, RideStatus.completed],
+    },
   });
 
-  if(!ride) {
-    throw new AppError(404, 'No ride found');
+  if (!ride) {
+    throw new AppError(404, "No ride found");
   }
 
   return ride;
-}
+};
 
 export const RideService = {
   getRideForUser,
@@ -250,5 +252,5 @@ export const RideService = {
   updateRideStatus,
   getAllRides,
   rideHistory,
-  getSingleRide
+  getSingleRide,
 };
