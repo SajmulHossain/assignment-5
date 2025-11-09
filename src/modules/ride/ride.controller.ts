@@ -74,11 +74,22 @@ const getSingleRide = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAvailableRidesForDriver = catchAsync(async(_req, res) => {
+  const data = await RideService.getAvailableRidesForDriver();
+
+    sendResponse(res, {
+      data,
+      message: "Ride retrived successfully",
+      statusCode: 200,
+    });
+})
+
 export const RideController = {
   createRide,
   updateRideStatus,
   getRideForUser,
   getAllRides,
   rideHistory,
-  getSingleRide
+  getSingleRide,
+  getAvailableRidesForDriver
 };

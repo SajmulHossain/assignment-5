@@ -246,6 +246,16 @@ const getSingleRide = async (email: string) => {
   return ride;
 };
 
+const getAvailableRidesForDriver = async () => {
+  const data = await Ride.find({
+    "status.state": RideStatus.requested,
+  });
+
+  const rides = data.filter((d) => d.status.length === 1);
+
+  return rides;
+};
+
 export const RideService = {
   getRideForUser,
   createRide,
@@ -253,4 +263,5 @@ export const RideService = {
   getAllRides,
   rideHistory,
   getSingleRide,
+  getAvailableRidesForDriver,
 };
