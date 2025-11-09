@@ -251,9 +251,14 @@ const getAvailableRidesForDriver = async () => {
     "status.state": RideStatus.requested,
   });
 
-  const rides = data.filter((d) => d.status.length === 1);
+  const rides = await data.filter((d) => d.status.length === 1);
+  const ridesWithUserPromises = rides.map(async ride => {
+    const rider = await User.findOne({email: ride.toObject().rider});
+    return {...ride.toObject(), rider}
+  })
 
-  return rides;
+ const ridesWithRider = await Promise.all(ridesWithUserPromises);
+  return ridesWithRider;
 };
 
 export const RideService = {
