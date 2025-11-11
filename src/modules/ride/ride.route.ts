@@ -11,6 +11,7 @@ router.get("/history", checkAuth(...Object.values(UserRole)), RideController.rid
 router.get("/all-rides", checkAuth(UserRole.admin), RideController.getAllRides);
 router.get("/me", checkAuth(...Object.values(UserRole)), RideController.getRideForUser);
 router.get("/ride", checkAuth(...Object.values(UserRole)), RideController.getSingleRide);
+router.get("/current", checkAuth(...Object.values(UserRole)), RideController.getCurrentRide);
 router.get("/available-rides", checkAuth(UserRole.driver), RideController.getAvailableRidesForDriver);
 router.post("/request", checkAuth(...Object.values(UserRole)),validateReqBody(createRideZodSchema), RideController.createRide);
 router.patch("/:id/status", checkAuth(...Object.values(UserRole)), validateReqBody(updateRideZodSchema), RideController.updateRideStatus);

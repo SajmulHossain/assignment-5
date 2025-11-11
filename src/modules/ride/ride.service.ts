@@ -146,6 +146,7 @@ const updateRideStatus = async (
   const isOnRide = await Ride.findOne({
     _id: { $ne: ride._id },
     driver: email,
+    "status.state": {$nin: [RideStatus.completed, RideStatus.cancelled]}
   });
 
   if (isOnRide) {
@@ -246,12 +247,14 @@ const getSingleRide = async (email: string) => {
   return ride;
 };
 
-const getAvailableRidesForDriver = async () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getAvailableRidesForDriver = async (_driverEmail: string) => {
   const data = await Ride.find({
     "status.state": RideStatus.requested,
+    // rider: { $ne: driverEmail }
   });
 
-  const rides = await data.filter((d) => d.status.length === 1);
+  const rides = data.filter((d) => d.status.length === 1);
   const ridesWithUserPromises = rides.map(async ride => {
     const rider = await User.findOne({email: ride.toObject().rider});
     return {...ride.toObject(), rider}
@@ -261,6 +264,31 @@ const getAvailableRidesForDriver = async () => {
   return ridesWithRider;
 };
 
+const getCurrentRide = async (email: string) => {
+  const ride = await Ride.findOne({
+    $or: [{rider: email}, {driver: email}],
+   "status.state": {
+    $nin: [RideStatus.completed, RideStatus.cancelled],
+   }
+  }).populate({
+    path: "rider",
+    localField: "rider",
+    foreignField: "email",
+    select: "-password"
+  }).populate({
+    path: "driver",
+    localField: "driver",
+    foreignField: "email",
+    select: "-password"
+  })
+
+    if (!ride) {
+      throw new AppError(404, "No ride found");
+    }
+
+  return ride;
+}
+
 export const RideService = {
   getRideForUser,
   createRide,
@@ -269,4 +297,5 @@ export const RideService = {
   rideHistory,
   getSingleRide,
   getAvailableRidesForDriver,
+  getCurrentRide
 };

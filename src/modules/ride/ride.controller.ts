@@ -74,8 +74,18 @@ const getSingleRide = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAvailableRidesForDriver = catchAsync(async(_req, res) => {
-  const data = await RideService.getAvailableRidesForDriver();
+const getAvailableRidesForDriver = catchAsync(async(req, res) => {
+  const data = await RideService.getAvailableRidesForDriver((req.user as JwtPayload).email as string);
+
+    sendResponse(res, {
+      data,
+      message: "Ride retrived successfully",
+      statusCode: 200,
+    });
+})
+
+const getCurrentRide = catchAsync(async(req, res) => {
+  const data = await RideService.getCurrentRide((req.user as JwtPayload).email as string);
 
     sendResponse(res, {
       data,
@@ -91,5 +101,6 @@ export const RideController = {
   getAllRides,
   rideHistory,
   getSingleRide,
-  getAvailableRidesForDriver
+  getAvailableRidesForDriver,
+  getCurrentRide
 };
