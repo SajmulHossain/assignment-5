@@ -12,15 +12,9 @@ export const checkDriverPending = async (req: Request, _res: Response, next: Nex
         throw new AppError(404, "Driver not found!");
     }
 
-       if (
-         driver.role === UserRole.driver &&
-         driver.driverApprovalStatus === DriverApprovalStatus.pending
-       ) {
-         throw new AppError(
-           400,
-           "Your driving request on pending... Try Again Later!"
-         );
-       }
+    if (driver.role === UserRole.driver && driver.driverApprovalStatus === DriverApprovalStatus.pending) {
+        throw new AppError(400, "Your driving request on pending... Try Again Later!");
+    }   
 
-       next();
+    next();
 }
