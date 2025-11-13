@@ -107,7 +107,9 @@ const driverHistory = async(email: string) => {
 
   const data = await Ride.find({
     driver: email,
-    "status.state": RideStatus.completed
+    "status.state": {
+      $in: RideStatus.completed
+    }
   })
 
   return data;
