@@ -1,6 +1,6 @@
 import { Query } from "mongoose";
 
-const excludeFields = ["search", "sort", "fields", "page", "limit"];
+const excludeFields = ["search", "sort", "fields", "page", "limit", "status"];
 
 export class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
@@ -19,6 +19,7 @@ export class QueryBuilder<T> {
       delete filter[field];
     }
 
+    console.log(filter);
     this.modelQuery.find(filter);
 
     return this;

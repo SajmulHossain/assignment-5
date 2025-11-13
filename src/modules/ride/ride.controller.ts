@@ -6,12 +6,13 @@ import { RideService } from "./ride.service";
 import { JwtPayload } from "jsonwebtoken";
 
 const getAllRides = catchAsync(async (req: Request, res: Response) => {
-  const data = await RideService.getAllRides();
+  const {data, meta} = await RideService.getAllRides(req.query as Record<string, string>);
 
   sendResponse(res, {
     statusCode: 200,
     message: "Rides retrived successfully",
     data,
+    meta
   });
 });
 

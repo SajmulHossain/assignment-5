@@ -5,11 +5,22 @@ import { DriverApprovalStatus, IUser, UserRole } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { IRide, RideStatus } from "./ride.interface";
 import { Ride } from "./ride.model";
+import { QueryBuilder } from "../../utils/QueryBuilder";
 
-const getAllRides = async () => {
-  const rides = await Ride.find({});
-
-  return rides;
+const getAllRides = async (query: Record<string, string>) => {
+  const status = query.status;
+  const queryBuilder = new QueryBuilder(Ride.find(), {...(status && {"status.state" : status}), ...query});
+    const rides = queryBuilder
+      .filter()
+      .search(["pickup.place_name", "destination.place_name", 'rider', 'driver'])
+      .paginate()
+  
+    const [data, meta] = await Promise.all([
+      rides.build(),
+      rides.getMeta(),
+    ]);
+  
+    return {data, meta};
 };
 
 const getRideForUser = async (user: IUser) => {
