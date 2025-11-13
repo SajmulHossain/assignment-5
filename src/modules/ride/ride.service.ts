@@ -40,6 +40,15 @@ const createRide = async (payload: IRide, user: IUser) => {
     );
   }
 
+  const isDriverActive = await User.findOne({
+    email: user.email,
+    isDriverActive: true
+  })
+
+  if(isDriverActive) {
+    throw new AppError(400, "You are active driver. You cannot request any ride!");
+  }
+
   const isRunningRide = await Ride.findOne({
     rider: email,
     "status.state": { $ne: RideStatus.cancelled },
@@ -247,11 +256,10 @@ const getSingleRide = async (email: string) => {
   return ride;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getAvailableRidesForDriver = async (_driverEmail: string) => {
+const getAvailableRidesForDriver = async (driverEmail: string) => {
   const data = await Ride.find({
     "status.state": RideStatus.requested,
-    // rider: { $ne: driverEmail }
+    rider: { $ne: driverEmail }
   });
 
   const rides = data.filter((d) => d.status.length === 1);
