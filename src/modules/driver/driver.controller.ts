@@ -63,10 +63,21 @@ const getActiveStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const driverHistory = catchAsync(async(req, res) => {
+  const data = await DriverService.driverHistory((req?.user as JwtPayload)?.email as string);
+
+  sendResponse(res, {
+    data,
+    statusCode: 200,
+    message: "Data retrived successfully!"
+  })
+})
+
 export const DriverController = {
   suspendDriver,
   approveDriver,
   updateDriverActiveStatus,
   driverEarning,
   getActiveStatus,
+  driverHistory
 };

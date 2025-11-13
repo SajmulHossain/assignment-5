@@ -8,6 +8,7 @@ const router = Router();
 
 router.get("/earning", checkAuth(UserRole.driver), DriverController.driverEarning);
 router.get("/status", checkAuth(UserRole.driver), DriverController.getActiveStatus);
+router.get("/history", checkAuth(UserRole.driver), DriverController.driverHistory);
 router.patch("/active", checkAuth(UserRole.driver), checkDriverPending,DriverController.updateDriverActiveStatus);
 router.patch("/approve/:id", checkAuth(UserRole.admin), DriverController.approveDriver);
 router.patch("/suspend/:id", checkAuth(UserRole.admin), DriverController.suspendDriver);

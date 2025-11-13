@@ -95,10 +95,29 @@ const getActiveStatus = async(email: string) => {
   return driver.isDriverActive
 } 
 
+const driverHistory = async(email: string) => {
+  const driver = await User.findOne({
+    email,
+    role: UserRole.driver
+  })
+
+  if(!driver) {
+    throw new AppError(404, "Driver not found");
+  } 
+
+  const data = await Ride.find({
+    driver: email,
+    "status.state": RideStatus.completed
+  })
+
+  return data;
+}
+
 export const DriverService = {
   suspendDriver,
   approveDriver,
   updateDriverActiveStatus,
   driverEarning,
   getActiveStatus,
+  driverHistory
 };
