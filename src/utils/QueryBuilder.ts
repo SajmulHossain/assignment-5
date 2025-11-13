@@ -19,7 +19,6 @@ export class QueryBuilder<T> {
       delete filter[field];
     }
 
-    console.log(filter);
     this.modelQuery.find(filter);
 
     return this;
