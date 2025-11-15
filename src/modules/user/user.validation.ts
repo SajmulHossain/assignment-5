@@ -22,6 +22,12 @@ export const createUserZodSchema = z.object({
       message:
         "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
     }),
+  emergencyContact: z
+    .string("Phone Number must be string")
+    .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
+      message:
+        "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
+    }).optional(),
   role: z.enum(Object.values(UserRole)),
   vehicleInfo: z
     .object({
@@ -31,6 +37,8 @@ export const createUserZodSchema = z.object({
     .optional(),
 });
 
-const partialUserZodSchema = createUserZodSchema.partial()
+const partialUserZodSchema = createUserZodSchema.partial();
 
-export const updateUserZodSchema = partialUserZodSchema.omit({ password: true });
+export const updateUserZodSchema = partialUserZodSchema.omit({
+  password: true,
+});

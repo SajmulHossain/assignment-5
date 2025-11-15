@@ -44,6 +44,10 @@ const userSchema = new Schema<IUser>(
       type: String,
       enum: Object.values(UserRole),
     },
+    emergencyContact: {
+      type: String,
+      minlength: [11, "Number should at least 11 digit"]
+    },
 
     driverApprovalStatus: {
       type: String,

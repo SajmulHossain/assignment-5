@@ -25,6 +25,7 @@ export interface IUser {
   phone: string;
   role: UserRole;
   isBlocked?: boolean;
+  emergencyContact?: string;
   
   driverApprovalStatus: DriverApprovalStatus;
   isDriverActive: boolean;
