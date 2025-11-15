@@ -1,14 +1,12 @@
-import { Ride } from "../ride/ride.model";
 import {
   endOfDay,
   endOfMonth,
-  endOfWeek,
+  endOfYear,
   startOfDay,
   startOfMonth,
-  startOfWeek,
-  subMonths,
-  subWeeks,
+  startOfYear,
 } from "date-fns";
+import { Ride } from "../ride/ride.model";
 
 const adminAnalytics = async () => {
   const rideVolume = await Ride.aggregate([
@@ -39,7 +37,6 @@ const adminAnalytics = async () => {
     },
     { $sort: { date: 1 } },
   ]);
-
 
   const revenueTrend = await Ride.aggregate([
     {
@@ -72,7 +69,6 @@ const adminAnalytics = async () => {
     { $sort: { date: 1 } },
   ]);
 
-
   const driverActivity = await Ride.aggregate([
     { $match: { driver: { $ne: null } } },
     {
@@ -103,18 +99,38 @@ const adminAnalytics = async () => {
 };
 
 const driverAnalytics = async (email: string) => {
-    const dailyData = await Ride.find({
-      email,
-      createdAt: {
-        $gte: startofday,
-        $lte: endTime,
-      },
-    });
-}
+  const dailyData = await Ride.find({
+    driver: email,
+    createdAt: {
+      $gte: startOfDay(new Date()),
+      $lte: endOfDay(new Date()),
+    },
+  }).select("amount createdAt");
 
+  const monthlyData = await Ride.find({
+    driver: email,
+    createdAt: {
+      $gte: startOfMonth(new Date()),
+      $lte: endOfMonth(new Date()),
+    },
+  }).select("amount createdAt");
 
+  const yearlyData = await Ride.find({
+    driver: email,
+    createdAt: {
+      $gte: startOfYear(new Date()),
+      $lte: endOfYear(new Date()),
+    },
+  }).select("amount createdAt");
+
+  return {
+    daily: dailyData,
+    monthly: monthlyData,
+    year: yearlyData,
+  };
+};
 
 export const AnalyticService = {
   adminAnalytics,
-  driverAnalytics
+  driverAnalytics,
 };
